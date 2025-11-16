@@ -15,7 +15,7 @@ I chose the role of Berlin noise in different elements as the core of the work. 
 
 <H2>Inspiration</H2>
 
-![Monopoly's map](image-2.png)(map from Monopoly mobile game)
+![Monopoly's map](image-2.png)(Map from Monopoly mobile game;https://www.marmaladegamestudio.com/games/monopoly/)
 
 The main source of inspiration is Mondrian's "Broadway Boogie-Woogie". I wanted to simulate a "marquee", like the ever-changing neon lights in a city. I drew inspiration from Monopoly's original paper maps to its current mobile games and generative art, striving to create a feeling of "city marquee" and "terrain changes" by converting 2D to 3D.
 ![Create control sliders](image-3.png)
@@ -30,7 +30,7 @@ This is the foundation of the entire 3D art generation process, determining whic
 
 <H2>Modifications to the Group Code</H2>
 
-This system introduces significant enhancements, including a new WEBGL 3D rendering environment that replaces 2D blocks with a dynamic 3D cube generation system, complemented by intuitive mouse drag-and-drop view controls and a real-time parameter control panel. Performance has been optimized through an image pixel caching system that reduces frequent read operations, an improved checkerboard sampling mode for enhanced rendering efficiency, and automated regeneration interval control. The interactive experience has been elevated with three real-time control sliders for size changes, wave frequency, and color speed adjustments, along with reset button functionality and smoother camera movement for more fluid navigation.
+This system introduces significant enhancements, including a new WEBGL 3D (https://p5js.org/reference/p5/WEBGL/)rendering environment that replaces 2D blocks with a dynamic 3D cube(https://p5js.org/examples/3d-geometries/) generation system, complemented by intuitive mouse drag-and-drop view controls and a real-time parameter control panel. Performance has been optimized through an image pixel caching system that reduces frequent read operations, an improved checkerboard sampling mode for enhanced rendering efficiency, and automated regeneration interval control. The interactive experience has been elevated with three real-time control sliders for size changes, wave frequency, and color speed adjustments, along with reset button functionality and smoother camera movement for more fluid navigation.
 
 <H2>external Tools or Resources Used</H2>
 
