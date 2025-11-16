@@ -1,4 +1,4 @@
-Main-project_Individual
+<H1>Main-project_Individual</H1>
 How to Interact with the Project
 
 After the page loads, Mondrian's painting continuously changes. I believe our theme, the city, is precisely a constantly evolving subject. The screen displays 3D columns and small cubes that form Mondrian's work. The large cubes use a Berlin noise function to control the wave and size changes, while the small cubes use Berlin noise to control the speed of color changes, wave changes, and size changes. The sliders in the lower left corner control their movement speed, size, color (range: 0.1 to 0.001), and wave (range: 0.01 to 0.2). Clicking the "Reset" button returns the speed to the initial settings. The mouse can also be used to control the perspective. I've integrated this with the art of deconstruction and reconstruction, making the entire painting appear to float above the frame, thus creating a unique way of presenting the artwork.
