@@ -15,7 +15,8 @@ I chose the role of Berlin noise in different elements as the core of the work. 
 
 <H2>Inspiration</H2>
 
-![Monopoly's map](image-2.png)
+![Monopoly's map](image-2.png)(map from Monopoly mobile game)
+
 The main source of inspiration is Mondrian's "Broadway Boogie-Woogie". I wanted to simulate a "marquee", like the ever-changing neon lights in a city. I drew inspiration from Monopoly's original paper maps to its current mobile games and generative art, striving to create a feeling of "city marquee" and "terrain changes" by converting 2D to 3D.
 ![Create control sliders](image-3.png)
 This control panel allows users to: adjust the "breathing" effect (size change) of the 3D blocks, control the overall wave motion rhythm, adjust the speed and frequency of color changes, create personalized dynamic art experiences, and instantly adjust and explore the dynamic expression of 3D artworks.
