@@ -546,7 +546,7 @@ function setup() {
   if (ctx) {
     ctx.getContextAttributes().willReadFrequently = true;
   }
-  
+  // content outside the element box is not shown https://www.w3schools.com/jsref/prop_style_overflow.asp
   setAttributes('antialias', true);
   document.body.style.overflow = 'hidden';
   document.body.style.margin = '0';
