@@ -671,7 +671,7 @@ function onMouseMove(e) {
 function onMouseUp() {
   isDragging = false;
 }
-
+// Responsive scaling function 
 function scaleToWindow() {
   let scaleX = windowWidth / baseWidth;
   let scaleY = windowHeight / baseHeight;
@@ -684,7 +684,7 @@ function scaleToWindow() {
   canvasElement.style.transformOrigin = "center center";
   canvasElement.style.transform = `translate(-50%, -50%) scale(${scale})`;
 }
-
+// Handle window resize
 function windowResized() {
   scaleToWindow();
 }
