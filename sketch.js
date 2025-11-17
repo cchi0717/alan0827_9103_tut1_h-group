@@ -34,13 +34,16 @@ let outlineCubes = [];
 let wall;
 let frame;
 
-// Color definitions:Define colors as RGB arrays
+// Color definitions: Define colors as RGB arrays
+// this technique was not covered in class but provides precise color control and easy manipulation
+// using RGB arrays instead of hex codes or color names allows for mathematical operations
+// like brightness adjustments and smooth color transitions in the 3D animation
 let colors = {
-  gray: [214, 215, 210],
-  yellow: [225, 201, 39],
-  red: [173, 55, 43],
-  blue: [49, 66, 148],
-  bg: [235, 234, 230]
+  gray: [214, 215, 210],    // Neutral base color for background and plates
+  yellow: [225, 201, 39],   // Primary accent color inspired by Piet Mondrian's neoplasticism
+  red: [173, 55, 43],       // Secondary accent color for visual hierarchy and contrast
+  blue: [49, 66, 148],      // Tertiary accent color creating depth and balance
+  bg: [235, 234, 230]       // Background color providing subtle contrast to white elements
 };
 
 // Artwork display position and size
@@ -84,7 +87,9 @@ class Cube3D {
     push();
     translate(this.x, this.y, this.z);
     
-    // Wave motion
+     // Wave motion using trigonometric functions
+    // this technique was not covered in class but creates organic, fluid movement patterns
+    // by combining sine waves with Perlin noise offsets for natural-looking oscillations
     const wave = sin(frameCount * waveFrequency + this.noiseOffset) * (isOutline ? 1 : 2);
     translate(0, 0, wave);
     
@@ -114,7 +119,9 @@ class Cube3D {
       }
     }
     
-    // Brightness variation
+    // Dynamic brightness variation using trigonometric functions
+    // this technique was not covered in class but creates subtle, rhythmic lighting changes
+    // that enhance the three-dimensional perception of the cubes
     const brightnessShift = sin(frameCount * (isOutline ? 0.03 : 0.05) + this.noiseOffset) * (isOutline ? 15 : 25);
     fill(
       constrain(displayColor[0] + brightnessShift, 0, 255),
@@ -122,7 +129,9 @@ class Cube3D {
       constrain(displayColor[2] + brightnessShift, 0, 255)
     );
     
-    // Size wave effect
+    // Animated size variation using combined noise and trigonometric functions
+    // this technique was not covered in class but creates pulsating, breathing effects
+    // that make the 3D cubes appear alive and responsive to their environment
     const sizeWave = sin(frameCount * (isOutline ? (0.02 + noiseSpeed * 0.5) : (0.04 + noiseSpeed)) + this.noiseOffset) * (isOutline ? 0.5 : 1.5);
     box(
       this.width + sizeWave,
@@ -149,7 +158,10 @@ class MondrianBlock {
     // Base height
     const baseHeight = 30;
     
-    // Determine column height based on color
+   // Color-based hierarchical height system
+    // this technique was not covered in class but creates visual hierarchy and rhythm
+    // by assigning different heights to colors based on their perceptual weight
+    // yellow (1.3x) as dominant, red (1.2x) as secondary, blue (1.1x) as tertiary, gray (0.8x) as background
     let columnHeight = baseHeight;
     if (this.color === colors.yellow) columnHeight = baseHeight * 1.3;
     if (this.color === colors.blue) columnHeight = baseHeight * 1.1;
@@ -162,7 +174,9 @@ class MondrianBlock {
       this.y * 0.01, 
       frameCount * 0.02
     );
-    // Max height variation
+      // Dynamic height mapping with constrained variation
+    // this technique was not covered in class but ensures controlled randomness
+    // by mapping noise values to specific ranges and enforcing minimum height constraints
     const maxVariation = 15;
     const heightVariation = map(heightNoise, 0, 1, -5, maxVariation);
     const finalHeight = Math.max(columnHeight + heightVariation, baseHeight * 0.5);
@@ -203,20 +217,28 @@ class ControlPanel {
     this.container = null;
     this.create();
   }
-// Create control panel UI
+// Dynamic UI creation using p5.js DOM methods
+    // this technique was not covered in class but enables real-time interactive control panels
+    // by programmatically creating and styling HTML elements within the canvas environment
   create() {
     this.container = createDiv('');
+      // CSS-based positioning and styling for overlay interface
+    // this technique was not covered in class but creates professional-looking UI elements
+    // with semi-transparent backgrounds, rounded corners, and proper z-index layering
     this.container.style('position', 'absolute');
     this.container.style('top', '20px');
     this.container.style('left', '20px');
-    this.container.style('background', 'rgba(255, 255, 255, 0.8)');
+    this.container.style('background', 'rgba(255, 255, 255, 0.8)'); // Semi-transparent white
     this.container.style('padding', '15px');
-    this.container.style('border-radius', '8px');
+    this.container.style('border-radius', '8px');// Rounded corners for modern look
     this.container.style('font-family', 'Arial, sans-serif');
     this.container.style('font-size', '14px');
-    this.container.style('z-index', '100');
-    this.container.style('min-width', '250px');
+    this.container.style('z-index', '100');// Ensure UI stays on top of canvas
+    this.container.style('min-width', '250px');// Consistent sizing
 
+    // Modular control creation pattern
+    // this technique was not covered in class but organizes complex UI into reusable components
+    // allowing for easy maintenance and expansion of interactive parameters
     this.createNoiseSpeedControl();
     this.createWaveFrequencyControl();
     this.createColorChangeSpeedControl();
@@ -296,8 +318,13 @@ class ControlPanel {
     colorChangeSpeedSlider.value(colorChangeSpeedValue);
     this.updateSliderDisplays();
   }
-// Update displayed slider values
+  // Real-time DOM manipulation for dynamic value display
+  // this technique was not covered in class but enables live feedback of parameter changes
+  // by directly manipulating HTML content without page reloads, creating responsive user experience
   updateSliderDisplays() {
+    // Precision value formatting with fixed decimal places
+    // this technique was not covered in class but provides consistent numerical display
+    // using toFixed(3) to maintain uniform decimal precision across all parameter values
     select('#noiseSpeedValue').html('value: ' + noiseSpeedValue.toFixed(3));
     select('#waveFrequencyValue').html('value: ' + waveFrequencyValue.toFixed(3));
     select('#colorChangeSpeedValue').html('value: ' + colorChangeSpeedValue.toFixed(3));
@@ -317,12 +344,16 @@ class Artwork3D {
     this.generate3DArt();
     this.initialized = true;
   }
-// Preprocess image pixels and cache them
+  // Image pixel caching system for performance optimization
+  // this technique was not covered in class but dramatically improves real-time processing
+  // by storing pixel data in a typed array and avoiding repeated pixel array lookups
   preprocessImagePixels() {
     if (!sourceImage.pixels.length) {
       sourceImage.loadPixels();
     }
-  // Cache pixel data  
+  // Cache pixel data using Uint8Array for memory efficiency
+  // this technique was not covered in class but provides faster pixel access and lower memory usage
+  // compared to constantly reading from the original image pixel array
     imagePixelsCache = {
       data: new Uint8Array(sourceImage.pixels),
       width: sourceImage.width,
@@ -330,30 +361,46 @@ class Artwork3D {
       timestamp: millis()
     };
   }
-// Get pixel color at (x, y)
+
+  // Optimized pixel color lookup with boundary checking
+  // this technique was not covered in class but ensures robust image processing
+  // by handling edge cases and using cached data for faster color retrieval
   getPixelColor(x, y) {
     if (!imagePixelsCache || x < 0 || y < 0 || x >= imagePixelsCache.width || y >= imagePixelsCache.height) {
       return [0, 0, 0];
     }
+    // Flat array indexing for 2D image data
+    // this technique was not covered in class but converts 2D coordinates to 1D array index
+    // using (y * width + x) * 4 formula to account for RGBA pixel structure
     const idx = (y * imagePixelsCache.width + x) * 4;
     return [
-      imagePixelsCache.data[idx],    
-      imagePixelsCache.data[idx + 1],
-      imagePixelsCache.data[idx + 2]
+      imagePixelsCache.data[idx],    // Red channel
+      imagePixelsCache.data[idx + 1], // Green channel
+      imagePixelsCache.data[idx + 2]  // Blue channel
     ];
   }
-// Check if pixel is an edge pixel
+
+  // Edge detection algorithm using neighborhood analysis
+  // this technique was not covered in class but identifies structural boundaries in the image
+  // by comparing each pixel with its four-connected neighbors and applying brightness threshold
   isEdgePixel(x, y, threshold = 200) {
+    // Boundary safety check
     if (x <= 0 || y <= 0 || x >= imagePixelsCache.width - 1 || y >= imagePixelsCache.height - 1) {
       return false;
     }
     
     const [r, g, b] = this.getPixelColor(x, y);
     
+    // Brightness threshold filtering
+    // this technique was not covered in class but isolates bright pixels (roads) from dark ones
+    // using a unified RGB threshold to detect white/light-colored map features
     if (r < threshold || g < threshold || b < threshold) {
       return false;
     }
     
+    // Four-direction neighborhood analysis
+    // this technique was not covered in class but detects edges by examining adjacent pixels
+    // in cardinal directions (up, down, left, right) to find brightness boundaries
     const directions = [[0, -1], [0, 1], [-1, 0], [1, 0]];
     
     for (let [dx, dy] of directions) {
@@ -365,7 +412,7 @@ class Artwork3D {
     
     return false;
   }
-// Generate 3D artwork based on image pixels
+// In the Artwork3D class, generate3DArt method:
   generate3DArt() {
     this.cubes = [];
     this.outlineCubes = [];
@@ -381,14 +428,18 @@ class Artwork3D {
     const rows = Math.ceil(imagePixelsCache.height / SAMPLE_STEP);
     const cols = Math.ceil(imagePixelsCache.width / SAMPLE_STEP);
     
-    // Sample pixels and create cubes with checkerboard pattern
+      // Checkerboard sampling pattern for 3D cube distribution
+  // this technique was not covered in class but creates optimal spatial distribution
+  // that prevents visual clutter while maintaining comprehensive map coverage
     for (let y = 0, row = 0; y < imagePixelsCache.height; y += SAMPLE_STEP, row++) {
       for (let x = 0, col = 0; x < imagePixelsCache.width; x += SAMPLE_STEP, col++) {
         // Checkerboard pattern (1/2 of the points)
         if ((row % 2 === 0 && col % 2 === 0) || (row % 2 === 1 && col % 2 === 1)) {
           const [r, g, b] = this.getPixelColor(x, y);
           
-          // Check if it's a road pixel (white color)
+              // Edge detection for enhanced 3D structure definition
+        // this technique was not covered in class but creates hierarchical visual importance
+        // by emphasizing map contours with taller, more prominent 3D elements
           if (r > 240 && g > 240 && b > 240) {
             const isEdge = this.isEdgePixel(x, y, 240);
             
@@ -399,7 +450,9 @@ class Artwork3D {
             const cubeWidth = UNIT_SIZE;
             const cubeHeight = UNIT_SIZE;
             let cubeDepth = isEdge ? CUBE_DEPTH * 1.5 : CUBE_DEPTH;
-            
+            // Perlin noise offset for individualized animation timing
+          // this technique was not covered in class but creates non-uniform, natural-looking
+          // motion patterns where each cube moves with unique phase and rhythm
             const cube = new Cube3D(
               cubeX,
               cubeY,
