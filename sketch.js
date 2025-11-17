@@ -2,8 +2,9 @@ let sourceImage;
 let artCanvas;
 let ready = false;// track if art is ready
 
-const baseWidth = 1920;
-const baseHeight = 1080;
+const DESIGN_W = 1920; // 設計寬度
+const DESIGN_H = 1080; // 設計高度
+
 
 // sampling parameters to control the size and ignore the imperfection of the map image
 //3D parameters - Increase the spacing between small squares while maintaining the checkerboard pattern
@@ -60,6 +61,11 @@ let colorChangeSpeedSlider;
 let noiseSpeedValue = 0.03;
 let waveFrequencyValue = 0.05;
 let colorChangeSpeedValue = 0.02;
+
+// Responsive scaling variables
+let scaleFactor = 1;
+let offsetX = 0;
+let offsetY = 0;
 
 // Class definitions
 class Cube3D {
@@ -535,7 +541,7 @@ function preload() {
 }
 
 function setup() {
-  const renderer = createCanvas(baseWidth, baseHeight, WEBGL);
+  const renderer = createCanvas(windowWidth, windowHeight, WEBGL);
   const ctx = renderer.elt.getContext('webgl') || renderer.elt.getContext('experimental-webgl');
   if (ctx) {
     ctx.getContextAttributes().willReadFrequently = true;
@@ -543,6 +549,8 @@ function setup() {
   
   setAttributes('antialias', true);
   document.body.style.overflow = 'hidden';
+  document.body.style.margin = '0';
+  document.body.style.padding = '0';
   
   // Initialize class instances
   artwork3D = new Artwork3D();
@@ -558,7 +566,16 @@ function setup() {
   // Initialize scene
   initializeScene();
   ready = true;
-  scaleToWindow();
+  
+  // Calculate initial scaling
+  calculateScaling();
+}
+
+function calculateScaling() {
+  // --- responsive scaling into a fixed 1920x1080 design space ---
+  scaleFactor = Math.max(width / DESIGN_W, height / DESIGN_H);
+  offsetX = (width - DESIGN_W * scaleFactor) / 2;
+  offsetY = (height - DESIGN_H * scaleFactor) / 2;
 }
 
 function initializeScene() {
@@ -584,6 +601,11 @@ function draw() {
   colorChangeSpeedValue = colorChangeSpeedSlider.value();
   controlPanel.updateSliderDisplays();
 
+  // Apply responsive scaling transformation
+  push();
+  translate(offsetX, offsetY);
+  scale(scaleFactor);
+
   // View control
   if (!isDragging) {
     // Let camera slowly follow mouse position
@@ -595,12 +617,14 @@ function draw() {
   }
   
   // Set camera
-  camera(0, 0, (height/2) / tan(PI/6), 0, 0, 0, 0, 1, 0);
+  camera(0, 0, (DESIGN_H/2) / tan(PI/6), 0, 0, 0, 0, 1, 0);
   rotateX(rotationX);
   rotateY(rotationY);
   
   // Draw 3D scene
   draw3DScene();
+  
+  pop(); // End responsive scaling transformation
   
   // Auto-regenerate artwork
   noiseOffset += noiseSpeedValue;
@@ -618,9 +642,9 @@ function draw3DScene() {
   directionalLight(255, 255, 255, 0, 0, -1);
   ambientLight(100);
   
-  // Calculate artwork position
-  const artX = ART_X + ART_WIDTH/2 - width/2;
-  const artY = ART_Y + ART_HEIGHT/2 - height/2;
+  // Calculate artwork position (relative to design space)
+  const artX = ART_X + ART_WIDTH/2 - DESIGN_W/2;
+  const artY = ART_Y + ART_HEIGHT/2 - DESIGN_H/2;
   
   // Draw wall
   push();
@@ -671,20 +695,9 @@ function onMouseMove(e) {
 function onMouseUp() {
   isDragging = false;
 }
-// Responsive scaling function 
-function scaleToWindow() {
-  let scaleX = windowWidth / baseWidth;
-  let scaleY = windowHeight / baseHeight;
-  let scale = Math.max(scaleX, scaleY);
-  
-  let canvasElement = document.querySelector('canvas');
-  canvasElement.style.position = "absolute";
-  canvasElement.style.left = "50%";
-  canvasElement.style.top = "50%";
-  canvasElement.style.transformOrigin = "center center";
-  canvasElement.style.transform = `translate(-50%, -50%) scale(${scale})`;
-}
+
 // Handle window resize
 function windowResized() {
-  scaleToWindow();
+  resizeCanvas(windowWidth, windowHeight);
+  calculateScaling();
 }
